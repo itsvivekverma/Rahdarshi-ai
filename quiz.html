@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield AI - Cybersecurity Quiz & Certification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0d1b2a;
+            --secondary: #1b263b;
+            --accent: #00e5ff;
+            --accent-glow: rgba(0,229,255,0.6);
+            --accent-dark: #0099cc;
+            --correct: #4caf50;
+            --incorrect: #f44336;
+            --warning: #ff9800;
+            --text: #ffffff;
+            --text-secondary: #bbbbbb;
+            --card-bg: rgba(255,255,255,0.05);
+            --card-border: rgba(255,255,255,0.1);
+            --neon-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d1b2a, #1b263b, #0d1b2a);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(0,229,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,153,204,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0,229,255,0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: pulseBackground 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(0,229,255,0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-duration: 25s; }
+        .shape:nth-child(2) { width: 120px; height: 120px; top: 60%; left: 80%; animation-duration: 30s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; top: 80%; left: 20%; animation-duration: 20s; }
+        .shape:nth-child(4) { width: 100px; height: 100px; top: 30%; left: 70%; animation-duration: 35s; }
+
+        @keyframes float {
+            0% { transform: translate(0,0) rotate(0); }
+            25% { transform: translate(100px,50px) rotate(90deg); }
+            50% { transform: translate(50px,100px) rotate(180deg); }
+            75% { transform: translate(-50px,50px) rotate(270deg); }
+            100% { transform: translate(0,0) rotate(360deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: logoPulse 3s infinite alternate;
+            text-shadow: var(--neon-shadow);
+        }
+
+        @keyframes logoPulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px var(--accent-glow); }
+            100% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-glow); }
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(0,229,255,0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .panel {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .panel:last-child {
+            border-bottom: none;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
+            color: var(--text);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titleGlow 3s infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+            100% { text-shadow: 0 0 15px var(--accent-glow); }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            font-size: 1.4rem;
+        }
+
+        .glow {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .lead {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid var(--card-border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,229,255,0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 15px rgba(0,229,255,0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0,229,255,0.4);
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0,229,255,0.6);
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--text);
+        }
+
+        .btn.ghost:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn.small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Quiz Specific Styles */
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.2);
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0,229,255,0.2);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0,229,255,0.1);
+            border-color: var(--accent);
+        }
+
+        .option-card.selected {
+            background: rgba(0,229,255,0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0,229,255,0.3);
+        }
+
+        .option-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .option-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .option-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .question-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .question-card {
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-item {
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-item:hover {
+            background: rgba(0,229,255,0.1);
+            border-color: var(--accent);
+        }
+
+        .option-item.selected {
+            background: rgba(0,229,255,0.2);
+            border-color: var(--accent);
+        }
+
+        .option-item.correct {
+            background: rgba(76,175,80,0.2);
+            border-color: var(--correct);
+        }
+
+        .option-item.incorrect {
+            background: rgba(244,67,54,0.2);
+            border-color: var(--incorrect);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .result-summary {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--correct) 0% var(--score-percent), var(--incorrect) var(--score-percent) 100%);
+        }
+
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        .score-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .certificate-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .certificate-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0d1b2a, #1b263b);
+            border: 10px solid var(--accent);
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .certificate-header {
+            margin-bottom: 40px;
+        }
+
+        .certificate-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .certificate-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .certificate-body {
+            margin: 40px 0;
+        }
+
+        .certificate-name {
+            font-size: 2.8rem;
+            color: var(--text);
+            margin: 20px 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .certificate-details {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin: 15px 0;
+        }
+
+        .certificate-footer {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature {
+            text-align: center;
+        }
+
+        .signature-line {
+            width: 200px;
+            height: 1px;
+            background: var(--text);
+            margin: 10px auto;
+        }
+
+        .certificate-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            transform: rotate(15deg);
+            box-shadow: 0 0 20px rgba(0,229,255,0.5);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(244,67,54,0.2);
+            border: 1px solid var(--incorrect);
+            color: var(--incorrect);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(76,175,80,0.2);
+            border: 1px solid var(--correct);
+            color: var(--correct);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-footer {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <header class="topbar">
+            <div class="brand">
+                <div class="logo">⛨</div>
+                <div>
+                    <div class="title">CyberShield AI</div>
+                    <div class="subtitle">Cybersecurity Quiz & Certification</div>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="index.html#tools" class="nav-link">Tools</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="panel">
+                <div class="quiz-container">
+                    <!-- Step 1: User Information -->
+                    <div class="step active" id="step1">
+                        <h1>Cybersecurity Quiz & Certification</h1>
+                        <p class="lead">Test your cybersecurity knowledge and earn a professional certificate from CyberShield AI</p>
+                        
+                        <div class="card">
+                            <h3>Enter Your Details</h3>
+                            <p>Please provide your information for the certificate</p>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="user-name">Full Name</label>
+                                <input type="text" class="form-input" id="user-name" placeholder="Enter your full name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="user-email">Email Address</label>
+                                <input type="email" class="form-input" id="user-email" placeholder="Enter your email" required>
+                            </div>
+                            
+                            <button class="btn primary" id="step1-next">Continue</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Quiz Configuration -->
+                    <div class="step" id="step2">
+                        <h2>Configure Your Quiz</h2>
+                        <p class="lead">Select difficulty level and cybersecurity domain</p>
+                        
+                        <div class="card">
+                            <h3>Difficulty Level</h3>
+                            <p>Choose how challenging you want the quiz to be</p>
+                            
+                            <div class="options-grid">
+                                <div class="option-card" data-difficulty="easy">
+                                    <div class="option-icon">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="option-title">Beginner</div>
+                                    <div class="option-desc">10 basic questions<br>Perfect for newcomers</div>
+                                </div>
+                                
+                                <div class="option-card" data-difficulty="medium">
+                                    <div class="option-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="option-title">Intermediate</div>
+                                    <div class="option-desc">15 moderate questions<br>For those with some experience</div>
+                                </div>
+                                
+                                <div class="option-card" data-difficulty="hard">
+                                    <div class="option-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="option-title">Advanced</div>
+                                    <div class="option-desc">30 challenging questions<br>For cybersecurity enthusiasts</div>
+                                </div>
+                                
+                                <div class="option-card" data-difficulty="expert">
+                                    <div class="option-icon">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <div class="option-title">Expert</div>
+                                    <div class="option-desc">50 complex questions<br>For cybersecurity professionals</div>
+                                </div>
+                            </div>
+                            
+                            <h3 style="margin-top: 40px;">Cybersecurity Domain</h3>
+                            <p>Select your area of focus</p>
+                            
+                            <div class="options-grid">
+                                <div class="option-card" data-domain="general">
+                                    <div class="option-icon">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <div class="option-title">General Security</div>
+                                    <div class="option-desc">Broad cybersecurity knowledge</div>
+                                </div>
+                                
+                                <div class="option-card" data-domain="network">
+                                    <div class="option-icon">
+                                        <i class="fas fa-network-wired"></i>
+                                    </div>
+                                    <div class="option-title">Network Security</div>
+                                    <div class="option-desc">Firewalls, protocols, network defense</div>
+                                </div>
+                                
+                                <div class="option-card" data-domain="webapp">
+                                    <div class="option-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="option-title">Web Application Security</div>
+                                    <div class="option-desc">OWASP, XSS, SQL injection, etc.</div>
+                                </div>
+                                
+                                <div class="option-card" data-domain="cloud">
+                                    <div class="option-icon">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    <div class="option-title">Cloud Security</div>
+                                    <div class="option-desc">AWS, Azure, GCP security</div>
+                                </div>
+                            </div>
+                            
+                            <div class="navigation-buttons">
+                                <button class="btn ghost" id="step2-back">Back</button>
+                                <button class="btn primary" id="step2-next">Start Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Quiz Questions -->
+                    <div class="step" id="step3">
+                        <div class="question-counter">
+                            <div>Question <span id="current-question">1</span> of <span id="total-questions">10</span></div>
+                            <div>Time: <span id="timer">00:00</span></div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress" id="quiz-progress" style="width: 0%"></div>
+                        </div>
+                        
+                        <div class="card question-card">
+                            <div class="question-text" id="question-text">Loading question...</div>
+                            
+                            <div class="options-list" id="options-list">
+                                <!-- Options will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="navigation-buttons">
+                            <button class="btn ghost" id="step3-back">Back</button>
+                            <button class="btn primary" id="step3-next" disabled>Next Question</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Results -->
+                    <div class="step" id="step4">
+                        <div class="card result-summary">
+                            <h2>Quiz Complete!</h2>
+                            <p>Here's how you performed</p>
+                            
+                            <div class="score-circle" id="score-circle">
+                                <div class="score-inner">
+                                    <div class="score-value" id="score-value">0%</div>
+                                    <div class="score-text">Score</div>
+                                </div>
+                            </div>
+                            
+                            <div class="score-details">
+                                <h3 id="result-title">Well Done!</h3>
+                                <p id="result-description">You've demonstrated good cybersecurity knowledge.</p>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                                    <div class="card">
+                                        <h4>Correct Answers</h4>
+                                        <div class="score-value" style="font-size: 2.5rem; color: var(--correct);" id="correct-answers">0</div>
+                                    </div>
+                                    
+                                    <div class="card">
+                                        <h4>Incorrect Answers</h4>
+                                        <div class="score-value" style="font-size: 2.5rem; color: var(--incorrect);" id="incorrect-answers">0</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 30px;">
+                                    <h4>Time Taken</h4>
+                                    <p id="time-taken">00:00</p>
+                                </div>
+                            </div>
+                            
+                            <div id="save-result-message" style="margin: 20px 0;"></div>
+                            
+                            <div class="navigation-buttons" style="justify-content: center; margin-top: 40px;">
+                                <button class="btn ghost" id="step4-back">Retake Quiz</button>
+                                <button class="btn primary" id="step4-next">
+                                    <span id="save-loading" style="display: none;" class="loading"></span>
+                                    <span id="save-text">View Certificate</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Certificate -->
+                    <div class="step" id="step5">
+                        <div class="certificate-section">
+                            <h2>Your Cybersecurity Certificate</h2>
+                            <p class="lead">Congratulations on completing the quiz!</p>
+                            
+                            <div class="certificate-container" id="certificate">
+                                <div class="certificate-stamp">
+                                    CERTIFIED
+                                </div>
+                                
+                                <div class="certificate-header">
+                                    <div class="certificate-title">CYBERSHIELD AI</div>
+                                    <div class="certificate-subtitle">Cybersecurity Knowledge Certification</div>
+                                </div>
+                                
+                                <div class="certificate-body">
+                                    <p>This certifies that</p>
+                                    <div class="certificate-name" id="cert-name">John Doe</div>
+                                    <p>has successfully completed the</p>
+                                    <div class="certificate-details" id="cert-details">Advanced Cybersecurity Quiz</div>
+                                    <p>with a score of <span id="cert-score">85%</span></p>
+                                    <p>on <span id="cert-date">January 1, 2024</span></p>
+                                    <p>Certificate ID: <span id="cert-id">CS-000001</span></p>
+                                </div>
+                                
+                                <div class="certificate-footer">
+                                    <div class="signature">
+                                        <div class="signature-line"></div>
+                                        <p>CyberShield AI Director</p>
+                                    </div>
+                                    
+                                    <div class="signature">
+                                        <div class="signature-line"></div>
+                                        <p>Date</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn primary" id="print-certificate">
+                                    <i class="fas fa-print"></i> Print Certificate
+                                </button>
+                                <button class="btn ghost" id="share-certificate">
+                                    <i class="fas fa-share-alt"></i> Share Certificate
+                                </button>
+                                <button class="btn ghost" id="new-quiz">
+                                    <i class="fas fa-redo"></i> Take Another Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div>© 2025 CyberShield AI — Developed by Vivek Verma</div>
+            <div class="muted">Advanced AI-powered cybersecurity platform with certification</div>
+        </footer>
+    </div>
+
+    <script>
+        // API Base URL - Using relative path for same domain
+        const API_BASE = ""; // Empty for same domain
+
+        // Quiz Data
+        const quizData = {
+            easy: [
+                {
+                    question: "What is the primary purpose of a firewall?",
+                    options: [
+                        "To prevent physical damage to computers",
+                        "To block unauthorized access to a network",
+                        "To speed up internet connection",
+                        "To protect against viruses only"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which of these is a strong password?",
+                    options: [
+                        "password123",
+                        "P@ssw0rd!2024",
+                        "12345678",
+                        "qwerty"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What does 'HTTPS' stand for?",
+                    options: [
+                        "HyperText Transfer Protocol Secure",
+                        "High Transfer Text Protocol System",
+                        "Hyper Transfer Text Protocol Secure",
+                        "High Text Transfer Protocol System"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "What is two-factor authentication?",
+                    options: [
+                        "Using two different passwords",
+                        "A security process with two verification steps",
+                        "Having two user accounts",
+                        "Using two different browsers"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is phishing?",
+                    options: [
+                        "A type of computer virus",
+                        "A method of catching fish",
+                        "A fraudulent attempt to obtain sensitive information",
+                        "A hardware component"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "Which of these is NOT a common type of malware?",
+                    options: [
+                        "Virus",
+                        "Firewall",
+                        "Trojan",
+                        "Ransomware"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What should you do if you receive a suspicious email?",
+                    options: [
+                        "Open all attachments to check",
+                        "Reply and ask for more information",
+                        "Delete it without opening",
+                        "Forward it to all your contacts"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What is the purpose of antivirus software?",
+                    options: [
+                        "To make your computer faster",
+                        "To detect and remove malicious software",
+                        "To improve internet speed",
+                        "To organize your files"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Why should you regularly update your software?",
+                    options: [
+                        "To get new features only",
+                        "To fix security vulnerabilities",
+                        "To make the software heavier",
+                        "To change the user interface"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is a VPN used for?",
+                    options: [
+                        "To play online games faster",
+                        "To create a secure connection over the internet",
+                        "To watch region-locked content only",
+                        "To increase computer storage"
+                    ],
+                    correct: 1
+                }
+            ],
+            medium: [
+                {
+                    question: "What is the difference between encryption and hashing?",
+                    options: [
+                        "Encryption is reversible, hashing is not",
+                        "Hashing is reversible, encryption is not",
+                        "They are the same thing",
+                        "Encryption is for passwords, hashing is for emails"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "What is a DDoS attack?",
+                    options: [
+                        "Distributed Denial of Service attack",
+                        "Direct Data Overflow System",
+                        "Digital Document Organization Service",
+                        "Data Deletion on System"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "Which protocol is used for secure email communication?",
+                    options: [
+                        "SMTP",
+                        "POP3",
+                        "IMAP",
+                        "PGP"
+                    ],
+                    correct: 3
+                },
+                {
+                    question: "What is the principle of least privilege?",
+                    options: [
+                        "Giving users maximum access for efficiency",
+                        "Granting only necessary permissions to users",
+                        "Allowing all users equal access",
+                        "Restricting access based on seniority"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What does SQL injection target?",
+                    options: [
+                        "Network hardware",
+                        "Database systems",
+                        "User passwords",
+                        "Email servers"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which of these is a symmetric encryption algorithm?",
+                    options: [
+                        "RSA",
+                        "AES",
+                        "ECC",
+                        "DSA"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is a zero-day vulnerability?",
+                    options: [
+                        "A bug that is fixed within 24 hours",
+                        "A vulnerability unknown to the vendor",
+                        "A security issue that occurs at midnight",
+                        "A problem that affects zero users"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is social engineering?",
+                    options: [
+                        "A branch of computer engineering",
+                        "Manipulating people to divulge confidential information",
+                        "Engineering social media platforms",
+                        "A type of hardware design"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is the purpose of a honeypot?",
+                    options: [
+                        "To attract and study attackers",
+                        "To store sweet data",
+                        "To improve network speed",
+                        "To backup important files"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "Which authentication factor is 'something you have'?",
+                    options: [
+                        "Password",
+                        "Fingerprint",
+                        "Security token",
+                        "Voice recognition"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What is cross-site scripting (XSS)?",
+                    options: [
+                        "A type of phishing attack",
+                        "Injecting malicious scripts into webpages",
+                        "A network protocol vulnerability",
+                        "A physical security breach"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What does CIA stand for in cybersecurity?",
+                    options: [
+                        "Central Intelligence Agency",
+                        "Confidentiality, Integrity, Availability",
+                        "Cyber Intelligence Assessment",
+                        "Computer Incident Analysis"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which port is typically used for SSH?",
+                    options: [
+                        "21",
+                        "22",
+                        "23",
+                        "25"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is a man-in-the-middle attack?",
+                    options: [
+                        "Intercepting communication between two parties",
+                        "A physical breach of a data center",
+                        "Stealing a computer from an office",
+                        "Hacking through social media"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "What is the purpose of a security information and event management (SIEM) system?",
+                    options: [
+                        "To manage user passwords",
+                        "To provide real-time analysis of security alerts",
+                        "To encrypt all network traffic",
+                        "To block unwanted emails"
+                    ],
+                    correct: 1
+                }
+            ]
+        };
+
+        // Quiz State
+        let quizState = {
+            currentStep: 1,
+            userName: '',
+            userEmail: '',
+            difficulty: '',
+            domain: '',
+            questions: [],
+            currentQuestionIndex: 0,
+            userAnswers: [],
+            score: 0,
+            startTime: null,
+            endTime: null,
+            timerInterval: null,
+            certificateId: null
+        };
+
+        // DOM Elements
+        const steps = document.querySelectorAll('.step');
+        const userNameInput = document.getElementById('user-name');
+        const userEmailInput = document.getElementById('user-email');
+        const optionCards = document.querySelectorAll('.option-card');
+        const currentQuestionElement = document.getElementById('current-question');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsListElement = document.getElementById('options-list');
+        const quizProgressElement = document.getElementById('quiz-progress');
+        const timerElement = document.getElementById('timer');
+        const scoreValueElement = document.getElementById('score-value');
+        const correctAnswersElement = document.getElementById('correct-answers');
+        const incorrectAnswersElement = document.getElementById('incorrect-answers');
+        const timeTakenElement = document.getElementById('time-taken');
+        const resultTitleElement = document.getElementById('result-title');
+        const resultDescriptionElement = document.getElementById('result-description');
+        const certNameElement = document.getElementById('cert-name');
+        const certDetailsElement = document.getElementById('cert-details');
+        const certScoreElement = document.getElementById('cert-score');
+        const certDateElement = document.getElementById('cert-date');
+        const certIdElement = document.getElementById('cert-id');
+        const scoreCircleElement = document.getElementById('score-circle');
+        const saveLoadingElement = document.getElementById('save-loading');
+        const saveTextElement = document.getElementById('save-text');
+        const saveResultMessage = document.getElementById('save-result-message');
+
+        // Navigation Buttons
+        document.getElementById('step1-next').addEventListener('click', goToStep2);
+        document.getElementById('step2-back').addEventListener('click', goToStep1);
+        document.getElementById('step2-next').addEventListener('click', goToStep3);
+        document.getElementById('step3-back').addEventListener('click', goToStep2);
+        document.getElementById('step3-next').addEventListener('click', nextQuestion);
+        document.getElementById('step4-back').addEventListener('click', restartQuiz);
+        document.getElementById('step4-next').addEventListener('click', saveResultsAndGoToCertificate);
+        document.getElementById('print-certificate').addEventListener('click', printCertificate);
+        document.getElementById('share-certificate').addEventListener('click', shareCertificate);
+        document.getElementById('new-quiz').addEventListener('click', restartQuiz);
+
+        // Event Delegation for Option Selection (FIXED LAGGING)
+        optionsListElement.addEventListener('click', function(e) {
+            const optionItem = e.target.closest('.option-item');
+            if (optionItem) {
+                // Remove selected class from all options
+                const options = optionsListElement.querySelectorAll('.option-item');
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                optionItem.classList.add('selected');
+                
+                // Enable next button
+                document.getElementById('step3-next').disabled = false;
+            }
+        });
+
+        // Option Card Selection
+        optionCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const parent = this.parentElement;
+                const siblings = parent.querySelectorAll('.option-card');
+                
+                siblings.forEach(sibling => {
+                    sibling.classList.remove('selected');
+                });
+                
+                this.classList.add('selected');
+                
+                if (this.hasAttribute('data-difficulty')) {
+                    quizState.difficulty = this.getAttribute('data-difficulty');
+                } else if (this.hasAttribute('data-domain')) {
+                    quizState.domain = this.getAttribute('data-domain');
+                }
+            });
+        });
+
+        // Functions
+        function goToStep2() {
+            if (!userNameInput.value.trim() || !userEmailInput.value.trim()) {
+                alert('Please enter your name and email to continue.');
+                return;
+            }
+            
+            quizState.userName = userNameInput.value.trim();
+            quizState.userEmail = userEmailInput.value.trim();
+            
+            changeStep(2);
+        }
+
+        function goToStep1() {
+            changeStep(1);
+        }
+
+        function goToStep3() {
+            if (!quizState.difficulty || !quizState.domain) {
+                alert('Please select both difficulty level and cybersecurity domain.');
+                return;
+            }
+            
+            // Initialize quiz
+            initializeQuiz();
+            changeStep(3);
+        }
+
+        function goToStep2() {
+            changeStep(2);
+        }
+
+        function goToStep4() {
+            clearInterval(quizState.timerInterval);
+            quizState.endTime = new Date();
+            calculateResults();
+            changeStep(4);
+        }
+
+        async function saveResultsAndGoToCertificate() {
+            // Show loading state
+            saveLoadingElement.style.display = 'inline-block';
+            saveTextElement.textContent = 'Saving...';
+            document.getElementById('step4-next').disabled = true;
+            saveResultMessage.innerHTML = '';
+
+            try {
+                // Save results to backend
+                await saveQuizResults();
+                
+                // Generate certificate
+                generateCertificate();
+                changeStep(5);
+            } catch (error) {
+                console.error('Error saving results:', error);
+                saveResultMessage.innerHTML = `<div class="error-message">${error.message}</div>`;
+            } finally {
+                // Reset button state
+                saveLoadingElement.style.display = 'none';
+                saveTextElement.textContent = 'View Certificate';
+                document.getElementById('step4-next').disabled = false;
+            }
+        }
+
+        function changeStep(stepNumber) {
+            steps.forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            quizState.currentStep = stepNumber;
+        }
+
+        function initializeQuiz() {
+            // Get questions based on difficulty
+            quizState.questions = [...quizData[quizState.difficulty]];
+            
+            // Shuffle questions
+            shuffleArray(quizState.questions);
+            
+            // Reset quiz state
+            quizState.currentQuestionIndex = 0;
+            quizState.userAnswers = [];
+            quizState.score = 0;
+            quizState.startTime = new Date();
+            quizState.endTime = null;
+            quizState.certificateId = null;
+            
+            // Start timer
+            startTimer();
+            
+            // Display first question
+            displayQuestion();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startTimer() {
+            quizState.startTime = new Date();
+            
+            quizState.timerInterval = setInterval(() => {
+                const now = new Date();
+                const diff = now - quizState.startTime;
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function displayQuestion() {
+            const question = quizState.questions[quizState.currentQuestionIndex];
+            
+            // Update question counter
+            currentQuestionElement.textContent = quizState.currentQuestionIndex + 1;
+            totalQuestionsElement.textContent = quizState.questions.length;
+            
+            // Update progress bar
+            const progress = ((quizState.currentQuestionIndex) / quizState.questions.length) * 100;
+            quizProgressElement.style.width = `${progress}%`;
+            
+            // Display question
+            questionTextElement.textContent = question.question;
+            
+            // Display options - FIXED: Use efficient DOM manipulation
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option-item" data-index="${index}">
+                        ${option}
+                    </div>
+                `;
+            });
+            optionsListElement.innerHTML = optionsHTML;
+            
+            // Disable next button until an option is selected
+            document.getElementById('step3-next').disabled = true;
+        }
+
+        function nextQuestion() {
+            // Get selected option
+            const selectedOption = optionsListElement.querySelector('.option-item.selected');
+            
+            if (!selectedOption) {
+                alert('Please select an answer before proceeding.');
+                return;
+            }
+            
+            // Store user's answer
+            const answerIndex = parseInt(selectedOption.dataset.index);
+            quizState.userAnswers.push(answerIndex);
+            
+            // Check if answer is correct
+            const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
+            if (answerIndex === currentQuestion.correct) {
+                quizState.score++;
+            }
+            
+            // Move to next question or finish quiz
+            quizState.currentQuestionIndex++;
+            
+            if (quizState.currentQuestionIndex < quizState.questions.length) {
+                displayQuestion();
+            } else {
+                goToStep4();
+            }
+        }
+
+        function calculateResults() {
+            const totalQuestions = quizState.questions.length;
+            const correctAnswers = quizState.score;
+            const incorrectAnswers = totalQuestions - correctAnswers;
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            // Calculate time taken
+            const timeDiff = quizState.endTime - quizState.startTime;
+            const minutes = Math.floor(timeDiff / 60000);
+            const seconds = Math.floor((timeDiff % 60000) / 1000);
+            
+            // Update UI
+            scoreValueElement.textContent = `${percentage}%`;
+            correctAnswersElement.textContent = correctAnswers;
+            incorrectAnswersElement.textContent = incorrectAnswers;
+            timeTakenElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Set score circle
+            scoreCircleElement.style.setProperty('--score-percent', `${percentage}%`);
+            
+            // Set result message based on score
+            if (percentage >= 90) {
+                resultTitleElement.textContent = 'Outstanding!';
+                resultDescriptionElement.textContent = 'You have demonstrated exceptional cybersecurity knowledge. You are truly an expert in this field!';
+            } else if (percentage >= 80) {
+                resultTitleElement.textContent = 'Excellent!';
+                resultDescriptionElement.textContent = 'You have a strong understanding of cybersecurity concepts. Keep up the great work!';
+            } else if (percentage >= 70) {
+                resultTitleElement.textContent = 'Good Job!';
+                resultDescriptionElement.textContent = 'You have a solid foundation in cybersecurity. There is always more to learn!';
+            } else if (percentage >= 60) {
+                resultTitleElement.textContent = 'Not Bad!';
+                resultDescriptionElement.textContent = 'You have basic cybersecurity knowledge. Consider studying more to improve your skills.';
+            } else {
+                resultTitleElement.textContent = 'Needs Improvement';
+                resultDescriptionElement.textContent = 'Cybersecurity is a complex field. Keep learning and try again!';
+            }
+        }
+
+        async function saveQuizResults() {
+            const totalQuestions = quizState.questions.length;
+            const percentage = Math.round((quizState.score / totalQuestions) * 100);
+            const timeDiff = quizState.endTime - quizState.startTime;
+            const timeTaken = Math.floor(timeDiff / 1000); // in seconds
+            
+            const quizData = {
+                user_name: quizState.userName,
+                user_email: quizState.userEmail,
+                difficulty: quizState.difficulty,
+                domain: quizState.domain,
+                score: quizState.score,
+                total_questions: totalQuestions,
+                percentage: percentage,
+                time_taken: timeTaken,
+                user_answers: quizState.userAnswers,
+                correct_answers: quizState.questions.map((q, i) => q.correct),
+                completed_at: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(`/save-quiz-result`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(quizData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to save quiz results');
+                }
+                
+                const result = await response.json();
+                quizState.certificateId = result.certificate_id || `CS-${Date.now()}`;
+                
+                // Show success message
+                saveResultMessage.innerHTML = `<div class="success-message">✓ Results saved successfully! Certificate ID: ${quizState.certificateId}</div>`;
+                
+                return result;
+            } catch (error) {
+                console.error('Error saving quiz results:', error);
+                
+                // Generate offline certificate ID
+                quizState.certificateId = `CS-OFFLINE-${Date.now()}`;
+                saveResultMessage.innerHTML = `<div class="success-message">✓ Certificate generated offline (ID: ${quizState.certificateId}). Results not saved to server.</div>`;
+                
+                // Don't throw error - allow user to continue with offline certificate
+                return { certificate_id: quizState.certificateId };
+            }
+        }
+
+        function generateCertificate() {
+            const totalQuestions = quizState.questions.length;
+            const percentage = Math.round((quizState.score / totalQuestions) * 100);
+            const difficultyMap = {
+                'easy': 'Beginner',
+                'medium': 'Intermediate', 
+                'hard': 'Advanced',
+                'expert': 'Expert'
+            };
+            const domainMap = {
+                'general': 'General Security',
+                'network': 'Network Security',
+                'webapp': 'Web Application Security',
+                'cloud': 'Cloud Security'
+            };
+            
+            // Format current date
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            
+            // Update certificate
+            if (certNameElement) certNameElement.textContent = quizState.userName;
+            if (certDetailsElement) certDetailsElement.textContent = `${difficultyMap[quizState.difficulty] || 'Cybersecurity'} ${domainMap[quizState.domain] || 'Quiz'}`;
+            if (certScoreElement) certScoreElement.textContent = `${percentage}%`;
+            if (certDateElement) certDateElement.textContent = formattedDate;
+            if (certIdElement) certIdElement.textContent = quizState.certificateId || `CS-${Date.now()}`;
+        }
+
+        function printCertificate() {
+            const certificateElement = document.getElementById('certificate');
+            const originalContents = document.body.innerHTML;
+            
+            // Create a print-friendly version
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>CyberShield AI Certificate</title>
+                    <style>
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            margin: 0;
+                            padding: 20px;
+                            background: white;
+                            color: black;
+                        }
+                        .certificate-container {
+                            border: 15px solid #00e5ff;
+                            border-radius: 15px;
+                            padding: 40px;
+                            text-align: center;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+                        }
+                        .certificate-title {
+                            font-size: 2.5rem;
+                            color: #00e5ff;
+                            margin-bottom: 10px;
+                            font-weight: bold;
+                        }
+                        .certificate-name {
+                            font-size: 2.8rem;
+                            color: #0d1b2a;
+                            margin: 20px 0;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                            letter-spacing: 2px;
+                        }
+                        .certificate-details {
+                            font-size: 1.2rem;
+                            color: #333;
+                            margin: 15px 0;
+                        }
+                        .certificate-stamp {
+                            position: absolute;
+                            top: 20px;
+                            right: 20px;
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 50%;
+                            background: #00e5ff;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-weight: bold;
+                            transform: rotate(15deg);
+                        }
+                        @media print {
+                            body { margin: 0; }
+                            .certificate-container { border-width: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${certificateElement.outerHTML}
+                </body>
+                </html>
+            `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
+
+        function shareCertificate() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My CyberShield AI Certificate',
+                    text: `I completed the ${quizState.difficulty} ${quizState.domain} cybersecurity quiz with a score of ${Math.round((quizState.score / quizState.questions.length) * 100)}%!`,
+                    url: window.location.href
+                })
+                .then(() => console.log('Successful share'))
+                .catch(error => console.log('Error sharing:', error));
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                alert('Web Share API not supported in your browser. You can print the certificate instead.');
+            }
+        }
+
+        function restartQuiz() {
+            // Reset quiz state
+            quizState.currentStep = 1;
+            quizState.userName = '';
+            quizState.userEmail = '';
+            quizState.difficulty = '';
+            quizState.domain = '';
+            quizState.questions = [];
+            quizState.currentQuestionIndex = 0;
+            quizState.userAnswers = [];
+            quizState.score = 0;
+            quizState.startTime = null;
+            quizState.endTime = null;
+            quizState.certificateId = null;
+            
+            // Clear inputs
+            userNameInput.value = '';
+            userEmailInput.value = '';
+            
+            // Clear selections
+            optionCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Clear messages
+            if (saveResultMessage) saveResultMessage.innerHTML = '';
+            
+            // Go to first step
+            changeStep(1);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Quiz system initialized');
+        });
+    </script>
+</body>
+</html>
